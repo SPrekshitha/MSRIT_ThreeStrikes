@@ -1,0 +1,127 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px 20px; /* increased top spacing */
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #38bdf8;
+}
+
+header p {
+    color: #94a3b8;
+}
+
+.card {
+    background: #1e293b;
+    padding: 24px; /* slightly more padding */
+    margin-bottom: 24px; /* better spacing between cards */
+    border-radius: 14px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 16px 0; /* better vertical spacing */
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #e2e8f0;
+    box-sizing: border-box; /* IMPORTANT FIX */
+}
+
+button {
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+button.primary:hover {
+    background: #0ea5e9;
+}
+
+button.danger:hover {
+    background: #dc2626;
+}
+
+button.primary {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+button.danger {
+    background: #ef4444;
+    color: white;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Task card */
+.task {
+    padding: 16px;
+    border-radius: 12px;
+    margin: 14px 0;
+    background: #1e293b;
+    border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* NEW: spacing inside card */
+}
+
+/* Priority */
+.high { border-left: 6px solid #ef4444; }
+.medium { border-left: 6px solid #f97316; }
+.low { border-left: 6px solid #eab308; }
+
+/* Done task */
+.done {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+/* Buttons inside task */
+.task-buttons {
+    margin-top: 10px;
+    display: flex;   /* NEW */
+    gap: 8px;        /* NEW */
+}
+
+.task-buttons button {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.task small {
+    color: #64748b;
+    font-size: 12px;
+}
+
+/* Empty */
+.empty {
+    text-align: center;
+    color: #64748b;
+}
+
+.task:hover {
+    border-color: #38bdf8;
+}
