@@ -12,6 +12,8 @@
 
 <button onclick="login()">Login</button>
 
+<p>Don't have account? <a href="signup.html">Signup</a></p>
+
 <script>
 async function login() {
     const email = document.getElementById('email').value;
@@ -28,8 +30,6 @@ async function login() {
     if (data.message === 'Login successful') {
         alert("Login successful");
         localStorage.setItem("loggedIn", "true");
-
-        // ✅ redirect to main page
         window.location.href = "index.html";
     } else {
         alert(data.message);

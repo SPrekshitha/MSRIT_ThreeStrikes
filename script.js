@@ -1,8 +1,11 @@
+// 🔐 PROTECTION
 if (localStorage.getItem("loggedIn") !== "true") {
     alert("Please login first");
     window.location.href = "login.html";
 }
+
 let tasks = [];
+
 function addTask() {
     let name = document.getElementById("taskName").value.trim();
     let deadline = document.getElementById("deadline").value;
@@ -12,13 +15,8 @@ function addTask() {
         alert("Please fill all fields!");
         return;
     }
-    tasks.push({
-        name,
-        deadline,
-        priority,
-        done: false
-    });
 
+    tasks.push({ name, deadline, priority, done: false });
     displayTasks();
 
     document.getElementById("taskName").value = "";
@@ -68,7 +66,7 @@ function displayTasks() {
     container.innerHTML = "";
 
     if (tasks.length === 0) {
-        container.innerHTML = "<p class='empty'>No tasks added yet</p>";
+        container.innerHTML = "<p>No tasks added yet</p>";
         return;
     }
 
@@ -82,23 +80,22 @@ function displayTasks() {
         div.className = `task ${priorityClass} ${task.done ? "done" : ""}`;
 
         div.innerHTML = `
-            <div>
-                <strong>${task.name}</strong><br>
-                Deadline: ${task.deadline}<br>
-                <small>${task.priority === 3 ? "High importance" :
-                         task.priority === 2 ? "Medium importance" :
-                         "Low importance"}</small>
-                
-                <div class="task-buttons">
-                    <button onclick="toggleDone(${index})">
-                        ${task.done ? "Undo" : "Done"}
-                    </button>
-                    <button onclick="editTask(${index})">Edit</button>
-                    <button onclick="deleteTask(${index})">Delete</button>
-                </div>
-            </div>
+            <strong>${task.name}</strong><br>
+            Deadline: ${task.deadline}<br>
+
+            <button onclick="toggleDone(${index})">
+                ${task.done ? "Undo" : "Done"}
+            </button>
+            <button onclick="editTask(${index})">Edit</button>
+            <button onclick="deleteTask(${index})">Delete</button>
         `;
 
         container.appendChild(div);
     });
+}
+
+function logout() {
+    localStorage.removeItem("loggedIn");
+    alert("Logged out");
+    window.location.href = "login.html";
 }
