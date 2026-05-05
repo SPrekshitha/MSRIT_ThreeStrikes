@@ -10,12 +10,12 @@ body {
     margin: auto;
     padding: 20px;
 }
-
 header {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 30px;
 }
-
 header h1 {
     color: #38bdf8;
 }
@@ -47,7 +47,7 @@ button {
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    width: 100%;
+    width: auto;
     font-weight: 600;
 }
 
@@ -97,4 +97,39 @@ button.danger {
 .empty {
     text-align: center;
     color: #64748b;
+}
+.logout-btn {
+    font-size: 17px;
+    padding: 6px 10px;
+    background: transparent;
+    border: 1px solid #334155;
+    color:rgb(255, 253, 253);
+    border-radius: 8px;
+    cursor: pointer;
+    width: auto;   /* VERY IMPORTANT (overrides global button width) */
+}
+
+.logout-btn:hover {
+    background: #1e293b;
+}
+.password-box {
+    position: relative;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.password-box input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 40px;
+    margin: 0; 
+}
+
+.eye {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #94a3b8;
 }
