@@ -1,5 +1,8 @@
+if (localStorage.getItem("loggedIn") !== "true") {
+    alert("Please login first");
+    window.location.href = "login.html";
+}
 let tasks = [];
-
 function addTask() {
     let name = document.getElementById("taskName").value.trim();
     let deadline = document.getElementById("deadline").value;
@@ -9,7 +12,6 @@ function addTask() {
         alert("Please fill all fields!");
         return;
     }
-
     tasks.push({
         name,
         deadline,
