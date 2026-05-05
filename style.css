@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #38bdf8;
+}
+
+header p {
+    color: #94a3b8;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+button {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+}
+
+button.primary {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+button.danger {
+    background: #ef4444;
+    color: white;
+}
+
+/* Task card */
+.task {
+    padding: 14px;
+    border-radius: 12px;
+    margin: 12px 0;
+    background: #1e293b;
+    border: 1px solid #334155;
+}
+
+/* Priority */
+.high { border-left: 6px solid #ef4444; }
+.medium { border-left: 6px solid #f97316; }
+.low { border-left: 6px solid #eab308; }
+
+/* Done task */
+.done {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+/* Buttons inside task */
+.task-buttons {
+    margin-top: 8px;
+}
+
+.task-buttons button {
+    width: auto;
+    margin-right: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+/* Empty */
+.empty {
+    text-align: center;
+    color: #64748b;
+}
