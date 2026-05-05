@@ -1,9 +1,16 @@
-
-const API_URL = "http://localhost:5000/tasks";
+const API_URL = "https://glorious-rotary-phone-97j95p69g7jg29vp6-5000.app.github.dev/tasks";
 
 let tasks = [];
 
-function addTask() {
+// Fetch tasks
+async function fetchTasks() {
+    let res = await fetch(API_URL);
+    tasks = await res.json();
+    displayTasks();
+}
+
+// Add task
+async function addTask() {
     let name = document.getElementById("taskName").value.trim();
     let deadline = document.getElementById("deadline").value;
     let priority = parseInt(document.getElementById("priority").value);
@@ -13,57 +20,41 @@ function addTask() {
         return;
     }
 
-    tasks.push({
-        name,
-        deadline,
-        priority,
-        done: false
+    await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, deadline, priority })
     });
-
-    displayTasks();
 
     document.getElementById("taskName").value = "";
     document.getElementById("deadline").value = "";
+
+    fetchTasks();
 }
 
-function calculateScore(task) {
-    let today = new Date();
-    let deadline = new Date(task.deadline);
-
-    let diff = (deadline - today) / (1000 * 60 * 60 * 24);
-    let urgency = diff <= 1 ? 3 : diff <= 3 ? 2 : 1;
-
-    return (task.priority * 2) + urgency;
+// Delete
+async function deleteTask(id) {
+    await fetch(`${API_URL}/${id}`, {
+        method: "DELETE"
+    });
+    fetchTasks();
 }
 
-function prioritizeTasks() {
-    tasks.sort((a, b) => calculateScore(b) - calculateScore(a));
-    displayTasks();
+// Toggle done
+async function toggleDone(id, current) {
+    await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ done: !current })
+    });
+    fetchTasks();
 }
 
-function clearTasks() {
-    tasks = [];
-    displayTasks();
-}
-
-function toggleDone(index) {
-    tasks[index].done = !tasks[index].done;
-    displayTasks();
-}
-
-function deleteTask(index) {
-    tasks.splice(index, 1);
-    displayTasks();
-}
-
-function editTask(index) {
-    let newName = prompt("Edit task name:", tasks[index].name);
-    if (newName) {
-        tasks[index].name = newName;
-        displayTasks();
-    }
-}
-
+// Display (HER UI STYLE KEPT)
 function displayTasks() {
     let container = document.getElementById("taskContainer");
     container.innerHTML = "";
@@ -73,7 +64,7 @@ function displayTasks() {
         return;
     }
 
-    tasks.forEach((task, index) => {
+    tasks.forEach((task) => {
         let div = document.createElement("div");
 
         let priorityClass =
@@ -83,30 +74,29 @@ function displayTasks() {
         div.className = `task ${priorityClass} ${task.done ? "done" : ""}`;
 
         div.innerHTML = `
+            <strong>${task.name}</strong>
 
-                <strong>${task.name}</strong>
+            <div style="font-size: 13px; color:#94a3b8;">
+                Deadline: ${task.deadline?.slice(0,10)}
+            </div>
 
-                <div style="font-size: 13px; color:#94a3b8;">
-                    Deadline: ${task.deadline}
-                </div>
+            <div style="font-size: 12px; color:#64748b;">
+                ${task.priority === 3 ? "High importance":
+                    task.priority === 2 ? "Medium importance" :
+                    "Low importance"}
+            </div>
 
-                <div style="font-size: 12px; color:#64748b;">
-                    ${task.priority === 3 ? "High importance":
-                        task.priority === 2 ? "Medium importance" :
-                        "Low importance"}
-                </div>
-
-                
-                <div class="task-buttons">
-                    <button onclick="toggleDone(${index})">
-                        ${task.done ? "Undo" : "Done"}
-                    </button>
-                    <button onclick="editTask(${index})">Edit</button>
-                    <button onclick="deleteTask(${index})">Delete</button>
-                </div>
-
+            <div class="task-buttons">
+                <button onclick="toggleDone('${task._id}', ${task.done})">
+                    ${task.done ? "Undo" : "Done"}
+                </button>
+                <button onclick="deleteTask('${task._id}')">Delete</button>
+            </div>
         `;
 
         container.appendChild(div);
     });
 }
+
+// Load on start
+fetchTasks();
