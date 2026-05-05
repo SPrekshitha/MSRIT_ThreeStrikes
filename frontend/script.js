@@ -1,3 +1,6 @@
+
+const API_URL = "http://localhost:5000/tasks";
+
 let tasks = [];
 
 function addTask() {
@@ -80,12 +83,19 @@ function displayTasks() {
         div.className = `task ${priorityClass} ${task.done ? "done" : ""}`;
 
         div.innerHTML = `
-            <div>
-                <strong>${task.name}</strong><br>
-                Deadline: ${task.deadline}<br>
-                <small>${task.priority === 3 ? "High importance" :
-                         task.priority === 2 ? "Medium importance" :
-                         "Low importance"}</small>
+
+                <strong>${task.name}</strong>
+
+                <div style="font-size: 13px; color:#94a3b8;">
+                    Deadline: ${task.deadline}
+                </div>
+
+                <div style="font-size: 12px; color:#64748b;">
+                    ${task.priority === 3 ? "High importance":
+                        task.priority === 2 ? "Medium importance" :
+                        "Low importance"}
+                </div>
+
                 
                 <div class="task-buttons">
                     <button onclick="toggleDone(${index})">
@@ -94,7 +104,7 @@ function displayTasks() {
                     <button onclick="editTask(${index})">Edit</button>
                     <button onclick="deleteTask(${index})">Delete</button>
                 </div>
-            </div>
+
         `;
 
         container.appendChild(div);

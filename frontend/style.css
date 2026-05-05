@@ -8,7 +8,7 @@ body {
 .container {
     max-width: 900px;
     margin: auto;
-    padding: 20px;
+    padding: 30px 20px;
 }
 
 header {
@@ -26,15 +26,15 @@ header p {
 
 .card {
     background: #1e293b;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
     border-radius: 14px;
 }
 
 input, select {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 12px;
+    margin: 8px 0 16px 0;
     border-radius: 8px;
     border: 1px solid #334155;
     background: #0f172a;
@@ -42,13 +42,26 @@ input, select {
 }
 
 button {
-    padding: 10px;
-    margin-top: 10px;
+    padding: 12px;
+    margin-top: 12px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
     width: 100%;
     font-weight: 600;
+    transition: 0.2s ease;
+}
+
+button.primary:hover {
+    background: #0ea5e9;
+}
+
+button.danger:hover {
+    background: #dc2626;
+}
+
+button:active {
+    transform: scale(0.98);
 }
 
 button.primary {
@@ -63,11 +76,14 @@ button.danger {
 
 /* Task card */
 .task {
-    padding: 14px;
+    padding: 16px;
     border-radius: 12px;
-    margin: 12px 0;
+    margin: 14px 0;
     background: #1e293b;
     border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 /* Priority */
@@ -83,18 +99,27 @@ button.danger {
 
 /* Buttons inside task */
 .task-buttons {
-    margin-top: 8px;
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
 }
 
 .task-buttons button {
     width: auto;
-    margin-right: 5px;
-    padding: 5px 10px;
+    padding: 6px 12px;
     font-size: 12px;
+}
+
+.task small {
+    color: #64748b;
 }
 
 /* Empty */
 .empty {
     text-align: center;
     color: #64748b;
+}
+
+.task:hover {
+    border-color: #38bdf8;
 }
