@@ -1,18 +1,25 @@
+
+
 const axios = require('axios');
 const Task = require('./models/Task');
+
 require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
 const path = require('path');
 
-const cors = require('cors');
+const authRoutes = require('./routes/auth');
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../frontend')));
+
+app.use('/auth', authRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
@@ -21,33 +28,65 @@ mongoose.connect(process.env.MONGO_URI)
 app.get('/', (req, res) => {
     res.send('Backend running');
 });
+
+// CREATE TASK
 app.post('/tasks', async (req, res) => {
+
     const task = new Task(req.body);
+
     await task.save();
+
     res.json(task);
 });
+
+// GET TASKS
 app.get('/tasks', async (req, res) => {
+
     const tasks = await Task.find();
+
     res.json(tasks);
 });
+
+// DELETE SINGLE TASK
 app.delete('/tasks/:id', async (req, res) => {
+
     await Task.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted" });
+
+    res.json({
+        message: "Deleted"
+    });
 });
 
-// delete ALL tasks
+// DELETE ALL TASKS
 app.delete('/tasks', async (req, res) => {
+
     await Task.deleteMany({});
-    res.json({ message: "All tasks deleted" });
+
+    res.json({
+        message: "All tasks deleted"
+    });
 });
+
+// TOGGLE DONE
 app.put('/tasks/:id', async (req, res) => {
-  const updated = await Task.findByIdAndUpdate(
-    req.params.id,
-    { done: req.body.done },
-    { new: true }
-  );
-  res.json(updated);
+
+    const updated = await Task.findByIdAndUpdate(
+
+        req.params.id,
+
+        {
+            done: req.body.done
+        },
+
+        {
+            new: true
+        }
+    );
+
+    res.json(updated);
 });
+
+// AI PRODUCTIVITY ADVICE
 app.post('/ai', async (req, res) => {
 
     try {
@@ -55,22 +94,22 @@ app.post('/ai', async (req, res) => {
         const { tasks, mood } = req.body;
 
         const prompt = `
-        You are an adaptive productivity assistant.
+You are an adaptive productivity assistant.
 
-        User mood:
-        ${mood}
+User mood:
+${mood}
 
-        Tasks/workload:
-        ${tasks}
+Tasks/workload:
+${tasks}
 
-        Give:
-        1. Productivity suggestions
-        2. Time management advice
-        3. Burnout prevention tips
-        4. Focus improvement techniques
+Give:
+1. Productivity suggestions
+2. Time management advice
+3. Burnout prevention tips
+4. Focus improvement techniques
 
-        Keep response short and practical.
-        `;
+Keep response short and practical.
+`;
 
         const response = await axios.post(
 
@@ -103,34 +142,13 @@ app.post('/ai', async (req, res) => {
 
         console.log(error.response?.data || error.message);
 
-                res.status(500).json({
-                            error: "AI generation failed"
-                                    });
-                                        }
-                                        });
-
-                                        app.listen(5000, () => console.log('Server running on port 5000'));
-
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-// Import routes
-const authRoutes = require('./routes/auth');
-
-// Use routes
-app.use('/auth', authRoutes);
-
-// Test route
-app.get('/', (req, res) => {
-    res.send('Server running...');
+        res.status(500).json({
+            error: "AI generation failed"
+        });
+    }
 });
 
-const PORT = 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(5000, () => {
+
+    console.log('Server running on port 5000');
 });

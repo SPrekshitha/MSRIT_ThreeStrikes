@@ -1,47 +1,94 @@
+
+
 const API_URL = "/tasks";
 
 let tasks = [];
 
-// Fetch tasks
+// FETCH TASKS
 async function fetchTasks() {
-    let res = await fetch(API_URL);
-    tasks = await res.json();
-    displayTasks();
+
+    try {
+
+        const res = await fetch(API_URL);
+
+        const data = await res.json();
+
+        tasks = data;
+
+        displayTasks();
+
+    } catch (err) {
+
+        console.error("Fetch error:", err);
+    }
 }
 
-// Add task
+// ADD TASK
 async function addTask() {
-    let name = document.getElementById("taskName").value.trim();
-    let deadline = document.getElementById("deadline").value;
-    let priority = parseInt(document.getElementById("priority").value);
+
+    const name =
+        document.getElementById("taskName").value.trim();
+
+    const deadline =
+        document.getElementById("deadline").value;
+
+    const priority =
+        parseInt(document.getElementById("priority").value);
 
     if (!name || !deadline) {
+
         alert("Please fill all fields!");
+
         return;
     }
 
-    await fetch(API_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, deadline, priority })
-    });
+    try {
 
-    document.getElementById("taskName").value = "";
-    document.getElementById("deadline").value = "";
+        await fetch(API_URL, {
 
-    fetchTasks();
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                name,
+                deadline,
+                priority
+            })
+        });
+
+        document.getElementById("taskName").value = "";
+
+        document.getElementById("deadline").value = "";
+
+        fetchTasks();
+
+    } catch (err) {
+
+        console.error("Add error:", err);
+    }
 }
 
-// Delete
+// DELETE SINGLE TASK
 async function deleteTask(id) {
-    await fetch(`${API_URL}/${id}`, {
-        method: "DELETE"
-    });
-    fetchTasks();
+
+    try {
+
+        await fetch(`${API_URL}/${id}`, {
+            method: "DELETE"
+        });
+
+        fetchTasks();
+
+    } catch (err) {
+
+        console.error("Delete error:", err);
+    }
 }
 
+// DELETE ALL TASKS
 async function clearTasks() {
 
     const confirmDelete =
@@ -49,47 +96,81 @@ async function clearTasks() {
 
     if (!confirmDelete) return;
 
-    await fetch(API_URL, {
-        method: "DELETE"
-    });
+    try {
 
-    fetchTasks();
+        await fetch(API_URL, {
+            method: "DELETE"
+        });
 
-    alert("✔ All tasks cleared successfully.");
+        fetchTasks();
+
+        alert("✔ All tasks cleared successfully.");
+
+    } catch (err) {
+
+        console.error("Clear error:", err);
+    }
 }
 
-// Toggle done
+// TOGGLE DONE
 async function toggleDone(id, current) {
-    await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ done: !current })
-    });
-    fetchTasks();
+
+    try {
+
+        await fetch(`${API_URL}/${id}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                done: !current
+            })
+        });
+
+        fetchTasks();
+
+    } catch (err) {
+
+        console.error("Toggle error:", err);
+    }
 }
 
-// Display (HER UI STYLE KEPT)
+// DISPLAY TASKS
 function displayTasks() {
-    let container = document.getElementById("taskContainer");
+
+    const container =
+        document.getElementById("taskContainer");
+
     container.innerHTML = "";
 
     if (tasks.length === 0) {
-        container.innerHTML = "<p class='empty'>No tasks added yet</p>";
+
+        container.innerHTML =
+            "<p class='empty'>No tasks added yet</p>";
+
         return;
     }
 
-    tasks.forEach((task) => {
-        let div = document.createElement("div");
+    tasks.forEach(task => {
 
-        let priorityClass =
+        const div = document.createElement("div");
+
+        const priorityClass =
+
             task.priority === 3 ? "high" :
-            task.priority === 2 ? "medium" : "low";
 
-        div.className = `task ${priorityClass} ${task.done ? "done" : ""}`;
+            task.priority === 2 ? "medium" :
+
+            "low";
+
+        div.className =
+            `task ${priorityClass} ${task.done ? "done" : ""}`;
 
         div.innerHTML = `
+
             <strong>${task.name}</strong>
 
             <div style="font-size: 13px; color:#94a3b8;">
@@ -97,32 +178,48 @@ function displayTasks() {
             </div>
 
             <div style="font-size: 12px; color:#64748b;">
-                ${task.priority === 3 ? "High importance":
-                    task.priority === 2 ? "Medium importance" :
-                    "Low importance"}
+                ${
+                    task.priority === 3
+                    ? "High importance"
+
+                    : task.priority === 2
+                    ? "Medium importance"
+
+                    : "Low importance"
+                }
             </div>
 
             <div class="task-buttons">
+
                 <button onclick="toggleDone('${task._id}', ${task.done})">
+
                     ${task.done ? "Undo" : "Done"}
+
                 </button>
-                <button onclick="deleteTask('${task._id}')">Delete</button>
+
+                <button onclick="deleteTask('${task._id}')">
+
+                    Delete
+
+                </button>
+
             </div>
         `;
 
         container.appendChild(div);
     });
 }
+
+// PRIORITIZATION
 function prioritizeTasks() {
 
     tasks.sort((a, b) => {
 
-        // Higher priority first
         if (b.priority !== a.priority) {
+
             return b.priority - a.priority;
         }
 
-        // Earlier deadline first
         return new Date(a.deadline) - new Date(b.deadline);
     });
 
@@ -131,11 +228,9 @@ function prioritizeTasks() {
     alert("✔ Tasks prioritized using adaptive AI logic.");
 }
 
-
-// Load on start
-fetchTasks();
-
+// AI ADVICE
 async function generateAIAdvice() {
+
     const button =
         document.getElementById("aiButton");
 
@@ -144,12 +239,11 @@ async function generateAIAdvice() {
     button.innerText = "Generating...";
 
     const workload =
-    document.getElementById("tasksInput").value;
+        document.getElementById("tasksInput").value;
 
     const mood =
         document.getElementById("moodInput").value;
-    
-    
+
     if (!workload.trim()) {
 
         alert("Please enter your tasks/workload first.");
@@ -171,17 +265,22 @@ async function generateAIAdvice() {
 
     document.getElementById("ai-response")
         .innerHTML = advice;
+
     button.disabled = false;
 
     button.innerText =
-         "✨ Generate AI Advice";
+        "✨ Generate AI Advice";
 }
+
+// GET AI ADVICE
 async function getAIAdvice(tasks, mood) {
 
     try {
 
         const response = await fetch(
+
             "/ai",
+
             {
                 method: "POST",
 
@@ -197,6 +296,7 @@ async function getAIAdvice(tasks, mood) {
         );
 
         if (!response.ok) {
+
             throw new Error("API failed");
         }
 
@@ -208,17 +308,12 @@ async function getAIAdvice(tasks, mood) {
 
         console.log("AI Error:", error);
 
-        // FALLBACK RESPONSES
-
         if (mood === "Stressed") {
 
             return `
             ✔ Focus only on urgent tasks first.<br><br>
-
             ✔ Avoid multitasking during stressful periods.<br><br>
-
             ✔ Take short breaks every 45 minutes.<br><br>
-
             ✔ Break large work into smaller milestones.
             `;
         }
@@ -227,11 +322,8 @@ async function getAIAdvice(tasks, mood) {
 
             return `
             ✔ Start with smaller easier tasks first.<br><br>
-
             ✔ Use shorter focus sessions today.<br><br>
-
             ✔ Stay hydrated and avoid burnout.<br><br>
-
             ✔ Schedule difficult work later if needed.
             `;
         }
@@ -240,11 +332,8 @@ async function getAIAdvice(tasks, mood) {
 
             return `
             ✔ Prioritize top 3 important tasks only.<br><br>
-
             ✔ Reduce unnecessary workload temporarily.<br><br>
-
             ✔ Focus on one task at a time.<br><br>
-
             ✔ Use structured time blocks for clarity.
             `;
         }
@@ -253,14 +342,14 @@ async function getAIAdvice(tasks, mood) {
 
             return `
             ✔ Use deep work sessions for productivity.<br><br>
-
             ✔ Minimize distractions during focus periods.<br><br>
-
             ✔ Maintain balanced work-rest cycles.<br><br>
-
             ✔ Track completed tasks for motivation.
             `;
         }
     }
 }
 
+// INITIAL LOAD
+fetchTasks();
+```
