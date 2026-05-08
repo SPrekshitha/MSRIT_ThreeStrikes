@@ -16,22 +16,33 @@ async function fetchTasks() {
 
 // Add task
 async function addTask() {
-    let name = document.getElementById("taskName").value.trim();
-    let deadline = document.getElementById("deadline").value;
-    let priority = parseInt(document.getElementById("priority").value);
+
+    let name =
+        document.getElementById("taskName").value.trim();
+
+    let deadline =
+        document.getElementById("deadline").value;
+
+    let priority =
+        parseInt(document.getElementById("priority").value);
+
+    const currentUser =
+        localStorage.getItem("currentUser");
 
     if (!name || !deadline) {
+
         alert("Please fill all fields!");
+
         return;
     }
 
     await fetch(API_URL, {
+
         method: "POST",
+
         headers: {
             "Content-Type": "application/json"
         },
-        const currentUser =
-            localStorage.getItem("currentUser");
 
         body: JSON.stringify({
             name,
@@ -42,6 +53,7 @@ async function addTask() {
     });
 
     document.getElementById("taskName").value = "";
+
     document.getElementById("deadline").value = "";
 
     fetchTasks();
