@@ -1,12 +1,10 @@
+const axios = require('axios');
 const Task = require('./models/Task');
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
 const path = require('path');
-
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-
 
 const cors = require('cors');
 
@@ -15,13 +13,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../frontend')));
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash"
-});
-
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
@@ -66,13 +57,11 @@ app.post('/ai', async (req, res) => {
         const prompt = `
         You are an adaptive productivity assistant.
 
-        Analyze the user's productivity state.
-
-        Tasks:
-        ${tasks}
-
-        Mood:
+        User mood:
         ${mood}
+
+        Tasks/workload:
+        ${tasks}
 
         Give:
         1. Productivity suggestions
@@ -83,23 +72,42 @@ app.post('/ai', async (req, res) => {
         Keep response short and practical.
         `;
 
-        const result = await model.generateContent(prompt);
+        const response = await axios.post(
 
-        const response = result.response.text();
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+
+            {
+                contents: [
+                    {
+                        parts: [
+                            {
+                                text: prompt
+                            }
+                        ]
+                    }
+                ]
+            }
+        );
+
+        const advice =
+            response.data
+            .candidates[0]
+            .content.parts[0]
+            .text;
 
         res.json({
-            advice: response
+            advice
         });
 
     } catch (error) {
 
-        console.log(error);
+        console.log(error.response?.data || error.message);
 
-        res.status(500).json({
-            error: "AI generation failed"
-        });
-    }
-});
+                res.status(500).json({
+                            error: "AI generation failed"
+                                    });
+                                        }
+                                        });
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+                                        app.listen(5000, () => console.log('Server running on port 5000'));
 
