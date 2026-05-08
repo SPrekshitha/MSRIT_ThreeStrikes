@@ -42,7 +42,11 @@ app.post('/tasks', async (req, res) => {
 // Get tasks
 app.get('/tasks', async (req, res) => {
 
-    const tasks = await Task.find();
+    const { userEmail } = req.query;
+
+    const tasks = await Task.find({
+        userEmail
+    });
 
     res.json(tasks);
 });
