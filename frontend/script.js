@@ -4,7 +4,12 @@ let tasks = [];
 
 // Fetch tasks
 async function fetchTasks() {
-    let res = await fetch(API_URL);
+    const currentUser =
+        localStorage.getItem("currentUser");
+
+    let res = await fetch(
+        `${API_URL}?userEmail=${currentUser}`
+    );
     tasks = await res.json();
     displayTasks();
 }
@@ -25,7 +30,15 @@ async function addTask() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name, deadline, priority })
+        const currentUser =
+            localStorage.getItem("currentUser");
+
+        body: JSON.stringify({
+            name,
+            deadline,
+            priority,
+            userEmail: currentUser
+        })
     });
 
     document.getElementById("taskName").value = "";
@@ -262,5 +275,32 @@ async function getAIAdvice(tasks, mood) {
             `;
         }
     }
+}
+const loggedIn =
+    localStorage.getItem("loggedIn");
+
+const currentUser =
+    localStorage.getItem("currentUser");
+
+if (!loggedIn) {
+
+    window.location.href =
+        "login.html";
+}
+
+document.getElementById("welcomeUser")
+    .innerText =
+    `Logged in as: ${currentUser}`;
+
+function logout() {
+
+    localStorage.removeItem("loggedIn");
+
+    localStorage.removeItem("currentUser");
+
+    alert("Logged out successfully");
+
+    window.location.href =
+        "login.html";
 }
 

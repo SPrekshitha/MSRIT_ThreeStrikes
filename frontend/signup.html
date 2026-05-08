@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Signup</title>
+
+    <link rel="stylesheet" href="auth.css">
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <h1>🚀 Adaptive Productivity Hub</h1>
+
+        <p>
+            AI-powered task prioritization system
+        </p>
+
+        <h2>Signup</h2>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter your name"
+        >
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Create password"
+        >
+
+        <button onclick="signup()">
+            Signup
+        </button>
+
+        <p class="switch-page">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+
+async function signup() {
+
+    const name =
+        document.getElementById("name").value;
+
+    const email =
+        document.getElementById("email").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    try {
+
+        const res = await fetch(
+            "/auth/signup",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                })
+            }
+        );
+
+        const data = await res.json();
+
+        alert(data.message);
+
+        if (data.message === "Signup successful") {
+
+            window.location.href =
+                "login.html";
+        }
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Signup failed");
+    }
+}
+
+</script>
+
+</body>
+</html>
