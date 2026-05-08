@@ -2,39 +2,38 @@
 
 ### AI-Powered Smart Task Prioritization & Productivity Assistance Platform
 
-Adaptive Productivity Hub is an AI-inspired productivity platform designed to help users organize tasks, intelligently prioritize work, and receive personalized productivity guidance based on workload and mood.
+Adaptive Productivity Hub is a web based productivity platform that helps users organize tasks, intelligently prioritize work, and receive personalized productivity guidance based on workload and mood.
 
-Built for an AI-focused hackathon, the platform combines task management with intelligent decision support to help users reduce decision fatigue, improve execution, and manage workload more effectively.
+Unlike conventional task management tools that only store tasks, Adaptive Productivity Hub supports smarter execution by helping users decide what to do next.
 
 ---
 
 ## Problem Statement
 
-Students, professionals, and busy individuals often struggle to manage multiple tasks effectively.
+Managing multiple tasks efficiently is a common challenge for students, professionals, and busy individuals.
 
-Common challenges include:
+Common productivity challenges include:
 
+- Difficulty deciding which task to complete first
 - Missing important deadlines
-- Difficulty deciding what to do first
-- Productivity loss due to poor prioritization
-- Stress from competing responsibilities
+- Poor prioritization of urgent work
+- Stress caused by competing responsibilities
 - Time wasted deciding instead of executing
 
-Most traditional task management tools focus only on storing tasks rather than helping users make smarter productivity decisions.
+Traditional task management tools often focus only on task storage rather than intelligent productivity support.
 
 ---
-
 ## Our Solution
 
-Adaptive Productivity Hub combines task management with AI-inspired decision support.
+Adaptive Productivity Hub combines task management with AI-inspired decision support to improve productivity.
 
-The platform helps users:
+The platform enables users to:
 
 - Organize tasks efficiently
-- Prioritize work intelligently
+- Prioritize tasks intelligently
 - Manage deadlines effectively
-- Receive personalized productivity guidance
-- Reduce stress through smarter execution planning
+- Receive productivity guidance based on workload and mood
+- Reduce decision fatigue through structured execution support
 
 ---
 ## Key Features
@@ -43,9 +42,10 @@ The platform helps users:
 - Secure user signup
 - User login
 - Logout functionality
-- User-specific task access
+- User specific task access
 
 ---
+
 ### 📋 Smart Task Management
 Users can:
 
@@ -61,6 +61,7 @@ Users can:
 - Clear all tasks
 
 ---
+
 ### ⚡ AI-Inspired Task Prioritization
 The platform uses intelligent rule based prioritization logic inspired by AI decision making principles.
 
@@ -70,11 +71,12 @@ Tasks are evaluated using:
 - Task importance
 - Structured prioritization scoring
 
-This helps users identify high priority tasks quickly and make smarter execution decisions.
+This helps users quickly identify high priority work and improve execution efficiency.
 
 ---
+
 ### 🤖 AI Productivity Assistant
-The built-in AI productivity assistant helps users manage workload more effectively.
+The built-in productivity assistant provides AI-inspired guidance based on user context.
 
 Users can:
 
@@ -82,33 +84,40 @@ Users can:
 - Select their current mood
 - Receive personalized productivity suggestions
 
-Example AI guidance includes:
+Example support includes:
 
-- Focus on urgent tasks first
-- Break large tasks into smaller milestones
-- Avoid multitasking during overload
-- Manage stress more effectively
+- Focusing on urgent tasks first
+- Breaking large tasks into smaller milestones
+- Managing stress more effectively
+- Improving productivity habits
 
 ---
 ## Tech Stack
 
 ### Frontend
-- HTML
-- CSS
+- HTML5
+- CSS3
 - JavaScript
+- Google Fonts(Inter)
 
 ### Backend
 - Node.js
 - Express.js
+- MongoDB
+- Mongoose
+- CORS
+- dotenv
+- Axios
+- Google Gemini API
 
 ---
 ## Workflow
 
 User Signup / Login  
 → Task Creation  
-→ Priority Assignment  
-→ AI-Inspired Prioritization  
-→ AI Productivity Guidance  
+→ Deadline & Priority Assignment  
+→ AI-Inspired Task Prioritization  
+→ Productivity Guidance  
 → Efficient Task Execution
 
 ---
@@ -118,18 +127,16 @@ User Signup / Login
 ```bash
 git clone <repository-url>
 ```
-
 ### Install Dependencies
 ```bash
 cd backend
 npm install
 ```
 
-### Run Server
+### Run Backend Server
 ```bash
 node index.js
 ```
-
 ### Launch Frontend
 Open:
 
@@ -142,14 +149,18 @@ using Live Server or any local browser-supported server.
 ---
 ## Use Cases
 
+Adaptive Productivity Hub can support:
+
 - Student assignment planning
-- Exam preparation
+- Exam preparation scheduling
 - Professional workload management
 - Personal productivity improvement
 - Stress aware task organization
 
 ---
 ## Future Scope
+
+Potential future enhancements include:
 
 - Calendar integration
 - Reminder notifications
@@ -160,7 +171,7 @@ using Live Server or any local browser-supported server.
 ---
 ## Team Contribution
 
-This project was collaboratively developed during a hackathon with contributions across frontend development, backend integration, authentication, prioritization logic, AI productivity assistance, and documentation.
+This project was collaboratively developed during a hackathon with contributions across frontend development, backend integration, authentication, prioritization logic, productivity assistance, and documentation.
 
 ---
 ## Impact
@@ -169,11 +180,11 @@ Adaptive Productivity Hub helps users:
 
 ✅ Reduce decision fatigue  
 ✅ Improve time management  
-✅ Focus on important work  
+✅ Focus on important tasks  
 ✅ Increase productivity  
 ✅ Manage workload more effectively  
 
 ---
 ## Conclusion
 
-Adaptive Productivity Hub transforms task management into intelligent productivity support by combining structured task organization, AI-inspired prioritization, and personalized productivity guidance.
+Adaptive Productivity Hub transforms task management into intelligent productivity support by combining structured task organization, AI-inspired prioritization, and personalized guidance for smarter execution.
