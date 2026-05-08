@@ -2,18 +2,17 @@
 <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="auth.css">
 </head>
 <body>
-
+<div class="container">
+<h1 class="project-title">Adaptive Productivity Hub</h1>
 <h2>Login</h2>
-
 <input type="email" id="email" placeholder="Email"><br><br>
 <input type="password" id="password" placeholder="Password"><br><br>
-
 <button onclick="login()">Login</button>
-
 <p>Don't have account? <a href="signup.html">Signup</a></p>
-
+</div>
 <script>
 async function login() {
     const email = document.getElementById('email').value;
@@ -26,16 +25,16 @@ async function login() {
     });
 
     const data = await res.json();
-
-    if (data.message === 'Login successful') {
-        alert("Login successful");
-        localStorage.setItem("loggedIn", "true");
-        window.location.href = "index.html";
-    } else {
-        alert(data.message);
-    }
+if (data.message === 'Login successful') {
+    alert("Login successful");
+    localStorage.setItem("loggedIn", "true");
+    // 👤 Save logged-in user email
+    localStorage.setItem("currentUser", email);
+    window.location.href = "index.html";
+} else {
+    alert(data.message);
+}
 }
 </script>
-
 </body>
 </html>

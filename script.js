@@ -4,7 +4,23 @@ if (localStorage.getItem("loggedIn") !== "true") {
     window.location.href = "login.html";
 }
 
-let tasks = [];
+// 👤 Current logged-in user
+let currentUser = localStorage.getItem("currentUser");
+
+if (!currentUser) {
+    alert("User not found");
+    window.location.href = "login.html";
+}
+
+// 📦 Load tasks for current user
+let tasks = JSON.parse(localStorage.getItem(currentUser + "_tasks")) || [];
+
+// 🔄 Display tasks immediately after reload/login
+displayTasks();
+
+function saveTasks() {
+    localStorage.setItem(currentUser + "_tasks", JSON.stringify(tasks));
+}
 
 function addTask() {
     let name = document.getElementById("taskName").value.trim();
@@ -16,7 +32,14 @@ function addTask() {
         return;
     }
 
-    tasks.push({ name, deadline, priority, done: false });
+    tasks.push({
+        name,
+        deadline,
+        priority,
+        done: false
+    });
+
+    saveTasks();
     displayTasks();
 
     document.getElementById("taskName").value = "";
@@ -35,28 +58,39 @@ function calculateScore(task) {
 
 function prioritizeTasks() {
     tasks.sort((a, b) => calculateScore(b) - calculateScore(a));
+
+    saveTasks();
     displayTasks();
 }
 
 function clearTasks() {
     tasks = [];
+
+    saveTasks();
     displayTasks();
 }
 
 function toggleDone(index) {
     tasks[index].done = !tasks[index].done;
+
+    saveTasks();
     displayTasks();
 }
 
 function deleteTask(index) {
     tasks.splice(index, 1);
+
+    saveTasks();
     displayTasks();
 }
 
 function editTask(index) {
     let newName = prompt("Edit task name:", tasks[index].name);
+
     if (newName) {
         tasks[index].name = newName;
+
+        saveTasks();
         displayTasks();
     }
 }
@@ -86,7 +120,9 @@ function displayTasks() {
             <button onclick="toggleDone(${index})">
                 ${task.done ? "Undo" : "Done"}
             </button>
+
             <button onclick="editTask(${index})">Edit</button>
+
             <button onclick="deleteTask(${index})">Delete</button>
         `;
 
@@ -96,6 +132,9 @@ function displayTasks() {
 
 function logout() {
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("currentUser");
+
     alert("Logged out");
+
     window.location.href = "login.html";
 }
