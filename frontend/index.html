@@ -42,6 +42,37 @@
         <h2>📋 Tasks</h2>
         <div id="taskContainer"></div>
     </div>
+    <div class="card">
+
+    <h2>🤖 AI Productivity Assistant</h2>
+
+    <textarea
+        id="tasksInput"
+        placeholder="Describe your workload or tasks for today">
+    </textarea>
+
+    <select id="moodInput">
+
+        <option value="Focused">Focused</option>
+
+        <option value="Stressed">Stressed</option>
+
+        <option value="Tired">Tired</option>
+
+        <option value="Overwhelmed">Overwhelmed</option>
+
+    </select>
+
+    <button class="primary"
+        onclick="generateAIAdvice()">
+
+        ✨ Generate AI Advice
+
+    </button>
+
+    <div id="ai-response"></div>
+
+</div>
 
 </div>
 <script src="script.js"></script>

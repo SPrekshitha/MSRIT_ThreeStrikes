@@ -98,5 +98,103 @@ function displayTasks() {
     });
 }
 
+
 // Load on start
 fetchTasks();
+
+async function generateAIAdvice() {
+    const button =
+        document.querySelector(".primary");
+
+    button.disabled = true;
+
+    button.innerText = "Generating...";
+    const tasks =
+        document.getElementById("tasksInput").value;
+
+    const mood =
+        document.getElementById("moodInput").value;
+
+    document.getElementById("ai-response")
+        .innerHTML =
+        "Generating AI insights...";
+
+    const advice =
+        await getAIAdvice(tasks, mood);
+
+    document.getElementById("ai-response")
+        .innerHTML = advice;
+    button.disabled = false;
+
+    button.innerText =
+         "✨ Generate AI Advice";
+}
+async function getAIAdvice(tasks, mood) {
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/ai",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    tasks,
+                    mood
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        return data.advice;
+
+    } catch (error) {
+
+        console.log("AI Error:", error);
+
+        if (mood === "Stressed") {
+
+    return `
+    ✔ Reduce workload intensity today.
+
+    ✔ Focus only on essential tasks.
+
+    ✔ Include breaks between sessions.
+
+    ✔ Avoid overloading your schedule.
+    `;
+}
+
+else if (mood === "Tired") {
+
+    return `
+    ✔ Start with smaller tasks first.
+
+    ✔ Use shorter focus sessions.
+
+    ✔ Stay hydrated and rested.
+
+    ✔ Maintain consistent progress.
+    `;
+}
+
+else {
+
+    return `
+    ✔ Prioritize important tasks first.
+
+    ✔ Avoid distractions during deep work.
+
+    ✔ Use focused work intervals.
+
+    ✔ Track completed tasks for motivation.
+    `;
+}
+    }
+}
+
