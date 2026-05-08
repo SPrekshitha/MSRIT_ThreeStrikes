@@ -167,4 +167,39 @@ button.danger {
     border-radius: 12px;
 
     line-height: 1.6;
+
+    color: black;
+}
+
+label {
+
+    display: block;
+
+    margin-top: 12px;
+
+    margin-bottom: 6px;
+
+    font-weight: 600;
+}
+
+.helper-text {
+
+    color: #94a3b8;
+
+    font-size: 14px;
+
+    margin-bottom: 12px;
+}
+
+input,
+textarea,
+select {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    margin-bottom: 12px;
 }

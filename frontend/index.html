@@ -19,13 +19,38 @@
     <div class="card">
         <h2>Add Task</h2>
 
-        <input type="text" id="taskName" placeholder="Task name">
-        <input type="date" id="deadline">
+        <label>Task Name</label>
+
+        <input
+            type="text"
+            id="taskName"
+            placeholder="Example: Finish hackathon presentation"
+        >
+
+        <label>Deadline</label>
+
+        <input
+            type="date"
+            id="deadline"
+        >
+        
+
+        <label>Task Importance</label>
 
         <select id="priority">
-            <option value="1">Low Priority</option>
-            <option value="2">Medium Priority</option>
-            <option value="3">High Priority</option>
+
+        <option value="1">
+            Low Priority — Can be done later
+        </option>
+
+        <option value="2">
+            Medium Priority — Important but not urgent
+        </option>
+
+        <option value="3">
+            High Priority — Urgent and important
+        </option>
+
         </select>
 
 
@@ -46,24 +71,42 @@
 
     <h2>🤖 AI Productivity Assistant</h2>
 
+    <p class="helper-text">
+        Enter your current workload and select your mood
+        to receive personalized AI productivity advice.
+    </p>
+
     <textarea
         id="tasksInput"
-        placeholder="Describe your workload or tasks for today">
+        placeholder="Example:
+    - Complete assignment
+    - Prepare presentation
+    - Study for exam">
     </textarea>
 
     <select id="moodInput">
 
-        <option value="Focused">Focused</option>
+    <option value="Focused">
+        Focused — Ready for deep work
+    </option>
 
-        <option value="Stressed">Stressed</option>
+    <option value="Stressed">
+        Stressed — Feeling overloaded
+    </option>
 
-        <option value="Tired">Tired</option>
+    <option value="Tired">
+        Tired — Low energy today
+    </option>
 
-        <option value="Overwhelmed">Overwhelmed</option>
+    <option value="Overwhelmed">
+        Overwhelmed — Too many tasks
+    </option>
 
-    </select>
+</select>
 
-    <button class="primary"
+    <button
+        id="aiButton"
+        class="primary"
         onclick="generateAIAdvice()">
 
         ✨ Generate AI Advice

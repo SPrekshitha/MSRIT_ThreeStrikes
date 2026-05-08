@@ -1,4 +1,4 @@
-const API_URL = "https://glorious-rotary-phone-97j95p69g7jg29vp6-5000.app.github.dev/tasks";
+const API_URL = "/tasks";
 
 let tasks = [];
 
@@ -40,6 +40,22 @@ async function deleteTask(id) {
         method: "DELETE"
     });
     fetchTasks();
+}
+
+async function clearTasks() {
+
+    const confirmDelete =
+        confirm("Are you sure you want to delete all tasks?");
+
+    if (!confirmDelete) return;
+
+    await fetch(API_URL, {
+        method: "DELETE"
+    });
+
+    fetchTasks();
+
+    alert("✔ All tasks cleared successfully.");
 }
 
 // Toggle done
@@ -97,6 +113,23 @@ function displayTasks() {
         container.appendChild(div);
     });
 }
+function prioritizeTasks() {
+
+    tasks.sort((a, b) => {
+
+        // Higher priority first
+        if (b.priority !== a.priority) {
+            return b.priority - a.priority;
+        }
+
+        // Earlier deadline first
+        return new Date(a.deadline) - new Date(b.deadline);
+    });
+
+    displayTasks();
+
+    alert("✔ Tasks prioritized using adaptive AI logic.");
+}
 
 
 // Load on start
@@ -104,23 +137,37 @@ fetchTasks();
 
 async function generateAIAdvice() {
     const button =
-        document.querySelector(".primary");
+        document.getElementById("aiButton");
 
     button.disabled = true;
 
     button.innerText = "Generating...";
-    const tasks =
-        document.getElementById("tasksInput").value;
+
+    const workload =
+    document.getElementById("tasksInput").value;
 
     const mood =
         document.getElementById("moodInput").value;
+    
+    
+    if (!workload.trim()) {
+
+        alert("Please enter your tasks/workload first.");
+
+        button.disabled = false;
+
+        button.innerText =
+            "✨ Generate AI Advice";
+
+        return;
+    }
 
     document.getElementById("ai-response")
         .innerHTML =
         "Generating AI insights...";
 
     const advice =
-        await getAIAdvice(tasks, mood);
+        await getAIAdvice(workload, mood);
 
     document.getElementById("ai-response")
         .innerHTML = advice;
@@ -134,7 +181,7 @@ async function getAIAdvice(tasks, mood) {
     try {
 
         const response = await fetch(
-            "http://localhost:5000/ai",
+            "/ai",
             {
                 method: "POST",
 
@@ -149,6 +196,10 @@ async function getAIAdvice(tasks, mood) {
             }
         );
 
+        if (!response.ok) {
+            throw new Error("API failed");
+        }
+
         const data = await response.json();
 
         return data.advice;
@@ -157,44 +208,59 @@ async function getAIAdvice(tasks, mood) {
 
         console.log("AI Error:", error);
 
+        // FALLBACK RESPONSES
+
         if (mood === "Stressed") {
 
-    return `
-    ✔ Reduce workload intensity today.
+            return `
+            ✔ Focus only on urgent tasks first.<br><br>
 
-    ✔ Focus only on essential tasks.
+            ✔ Avoid multitasking during stressful periods.<br><br>
 
-    ✔ Include breaks between sessions.
+            ✔ Take short breaks every 45 minutes.<br><br>
 
-    ✔ Avoid overloading your schedule.
-    `;
-}
+            ✔ Break large work into smaller milestones.
+            `;
+        }
 
-else if (mood === "Tired") {
+        else if (mood === "Tired") {
 
-    return `
-    ✔ Start with smaller tasks first.
+            return `
+            ✔ Start with smaller easier tasks first.<br><br>
 
-    ✔ Use shorter focus sessions.
+            ✔ Use shorter focus sessions today.<br><br>
 
-    ✔ Stay hydrated and rested.
+            ✔ Stay hydrated and avoid burnout.<br><br>
 
-    ✔ Maintain consistent progress.
-    `;
-}
+            ✔ Schedule difficult work later if needed.
+            `;
+        }
 
-else {
+        else if (mood === "Overwhelmed") {
 
-    return `
-    ✔ Prioritize important tasks first.
+            return `
+            ✔ Prioritize top 3 important tasks only.<br><br>
 
-    ✔ Avoid distractions during deep work.
+            ✔ Reduce unnecessary workload temporarily.<br><br>
 
-    ✔ Use focused work intervals.
+            ✔ Focus on one task at a time.<br><br>
 
-    ✔ Track completed tasks for motivation.
-    `;
-}
+            ✔ Use structured time blocks for clarity.
+            `;
+        }
+
+        else {
+
+            return `
+            ✔ Use deep work sessions for productivity.<br><br>
+
+            ✔ Minimize distractions during focus periods.<br><br>
+
+            ✔ Maintain balanced work-rest cycles.<br><br>
+
+            ✔ Track completed tasks for motivation.
+            `;
+        }
     }
 }
 
